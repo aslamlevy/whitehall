@@ -31,13 +31,14 @@ class Edition::GovUkDeliveryTest < ActiveSupport::TestCase
     assert edition.govuk_delivery_tags.include? "https://#{Whitehall.public_host}/government/policies.atom?departments%5B%5D=#{organisation.slug}&topics%5B%5D=#{topic2.slug}"
   end
 
-  test '#govuk_delivery_tags returns an atom feed url that does not include departments as well as a regular URL' do
+  test '#govuk_delivery_tags returns an atom feed url that offers just tags and just departments as well as a regular URL' do
     topic1 = create(:topic)
     organisation = create(:ministerial_department)
     edition = create(:policy, topics: [topic1], organisations: [organisation])
 
     assert edition.govuk_delivery_tags.include? "https://#{Whitehall.public_host}/government/policies.atom?departments%5B%5D=#{organisation.slug}&topics%5B%5D=#{topic1.slug}"
     assert edition.govuk_delivery_tags.include? "https://#{Whitehall.public_host}/government/policies.atom?topics%5B%5D=#{topic1.slug}"
+    assert edition.govuk_delivery_tags.include? "https://#{Whitehall.public_host}/government/policies.atom?departments%5B%5D=#{organisation.slug}"
   end
 
   test '#govuk_delivery_tags includes relevant to local param if edition is relevant' do
