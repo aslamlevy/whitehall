@@ -6,7 +6,7 @@ class EmailSignupsController < PublicFacingController
     fetch_organisations
     fetch_document_types
     @email_signup = EmailSignup.new
-    @email_signup.alerts = [@email_signup.build_alert]
+    @email_signup.alerts = extract_alerts_params
   end
 
   def create
@@ -46,14 +46,22 @@ class EmailSignupsController < PublicFacingController
   end
 
   def extract_alerts_params
-    alerts_params = (params[:email_signup] || {})[:alerts]
+    alerts_params = normalize_params
     case alerts_params
     when Array
       alerts_params
     when Hash
       convert_alerts_params_from_hash_to_array(alerts_params)
     else
-      []
+      [@email_signup.build_alert]
+    end
+  end
+
+  def normalize_params
+    if params[:email_signup]
+      (params[:email_signup] || {})[:alerts]
+    elsif (relevant_params = params.slice(:organisation, :topic, :document_type, :info_for_local)).any?
+      [relevant_params]
     end
   end
 
