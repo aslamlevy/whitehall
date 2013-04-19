@@ -33,10 +33,10 @@ module ApplicationHelper
   end
 
   def filter_email_signup_url(args={})
-    if params[:departments].any?
+    if params[:departments]
       params[:organisation] = params[:departments].first
     end
-    if params[:topics].any?
+    if params[:topics]
       params[:topic] = params[:topics].first
     end
     if params.has_key?(:announcement_type_option) and params[:announcement_type_option] != 'all'
