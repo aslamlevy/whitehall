@@ -26,6 +26,7 @@ class EmailSignupsController < PublicFacingController
   end
 
   protected
+
   def signup_failed
     fetch_topics
     fetch_organisations
@@ -36,11 +37,13 @@ class EmailSignupsController < PublicFacingController
   def fetch_topics
     @classifications = EmailSignup.valid_topics
   end
+
   def fetch_organisations
     orgs_by_type = EmailSignup.valid_organisations_by_type
     @live_ministerial_departments = orgs_by_type[:ministerial]
     @live_other_departments = orgs_by_type[:other]
   end
+
   def fetch_document_types
     @document_types = EmailSignup.valid_document_types_by_type
   end
