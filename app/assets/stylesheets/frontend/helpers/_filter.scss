@@ -145,7 +145,7 @@
     display: inline;
     .feed,
     .govdelivery {
-      float: left;
+      @include inline-block;
     }
   }
 }
